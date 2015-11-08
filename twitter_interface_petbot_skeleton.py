@@ -23,6 +23,7 @@ class twitter_pet_interface():
 
         #parses data into map with dictionary--user: list of tweets
 
+        #returns dict
 
     def tweet_user_mapping(self, user_mapping):
         #parse mapping
