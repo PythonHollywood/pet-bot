@@ -31,9 +31,6 @@ class twitter_pet_interface():
         #loop through all tweets per user
 
         #tweet pet's responses at users
-        
-    def increment_pet_hunger():
-        #since this program is called every 5? minutes, increment pet hunger everytime
 
     def update_profile_pic(self):
         #get pet's mood
