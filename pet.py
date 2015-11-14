@@ -94,8 +94,9 @@ class Pet():
         return 'I\'m hungry'
 
 
-# Just some example code, don't try running at this point
-pet = Pet('state.json', mood=0)
-pet.increment_time()
-print pet.interact_with('here, have som food')
-print pet.interact_with()
+if __name__ == '__main__':
+    # Just some example code, don't try running at this point
+    pet = Pet('state.json', mood=0)
+    pet.increment_time()
+    print pet.interact_with('here, have som food')
+    print pet.interact_with()
