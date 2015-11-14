@@ -70,7 +70,7 @@ class Pet():
 
         # call method associated with action.
         # for example
-        return action_spank(self)
+        return self.action_spank()
 
     def action_spank(self):
         """Example action method. Prefix these with action to make them
