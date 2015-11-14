@@ -82,7 +82,7 @@ class Pet():
         self.adjust_state()
 
         # create response string
-        response = ''
+        response = 'Ouch!'
 
         return response
 
