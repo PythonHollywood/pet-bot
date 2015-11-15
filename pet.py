@@ -9,14 +9,15 @@ DEFAULT_STATE = dict(
     mood=0.5,
     alertness=0.5)
 
-class Pet():
-    def __init__(self, state_file='', initial_state=None, **kwargs):
+
+class Pet(object):
+    def __init__(self, state_file=None, initial_state=None, **kwargs):
         """Creator method for the pet.
 
         Args:
             state_file: filename for the json file where state is saved.
-            If left empty, the deafault name state.json will be used.
-            May implement a keyword for in memory only
+            If left empty, the state will only be stored in memory and
+            thus not recoverable after the program has ended.
 
             initial_state (dict): dictionary containing initial values
             for the states. If empty, values from state_file will be used.
@@ -26,17 +27,12 @@ class Pet():
             **kwargs: Alternative way to specify initial states for individual
             state variables. Overrides initial_state and state_file.
         """
-        self.state = {}
         self.state_file = state_file
-
-        if state_file:
-            # Read json file
-            pass
-        elif initial_state:
-            pass
-        else:
-            # Initialize state
-            pass
+        self.state = DEFAULT_STATE
+        if self.state_file:
+            with open(state_file) as f:
+                self.state.update(json.load(f))
+        self.update_state(initial_state, **kwargs)
 
     def increment_time(self):
         """Some states should be updated as time progresses. This is done
