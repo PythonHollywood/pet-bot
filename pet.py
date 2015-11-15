@@ -65,13 +65,29 @@ class Pet(object):
 
     def adjust_state(self, adjustments=None, **kwargs):
         """Make a relative adjustment of the state from the current
-        based on dict or keyword arguments
+        based on dict or keyword arguments. **kwargs override adjustments
+        (this allows overriding one value in adjustments)
 
-        **kwargs should override adjustments (this allows overriding one value in adjustments)
+        Args:
+            adjustments: A dict containing relative adjustments for states.
+
+            **kwargs: Key-value pairs containing relative adjustments for states.
+            Overrides adjustments. For added clarity, one can use the unity operator
+            when making positive adjustments. For example:
+                self.adjust_state(mood=+1)
+
+        Raises:
+            KeyError: if adjustments or kwargs contain a key that is not defined
+            in self.state, KeyError will be raised.
         """
-        # make a relative update of self.state
-        # Don't forget to run self._update_state_file()
-        pass
+        if adjustments is None:
+            adjustments = {}
+        adjustments = adjustments.copy()
+        adjustments.update(**kwargs)
+        new_state = {}
+        for key in adjustments:
+            new_state[key] = self.state[key] + adjustments[key]
+        self.update_state(new_state)
 
     def interact_with(self, action=''):
         """This method should take an arbitrary string as an argument
