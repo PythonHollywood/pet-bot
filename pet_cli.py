@@ -11,9 +11,9 @@ if __name__ == '__main__':
     print 'Type something to interact or type "quit" to quit.'
 
     while True:
-        interation = raw_input()
-        if interation.lower() == 'quit':
+        interaction = raw_input()
+        if interaction.lower() == 'quit':
             break
 
         p.increment_time()
-        print p.interact_with(interation)
+        print p.interact_with(interaction)
