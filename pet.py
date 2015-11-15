@@ -3,11 +3,11 @@ import json
 
 DEFAULT_STATE = dict(
     awake=True,
-    hunger=0.5,
-    energy=0.5,
-    damage=0.5,
-    mood=0.5,
-    alertness=0.5)
+    hunger=50,
+    energy=50,
+    damage=50,
+    mood=50,
+    alertness=50)
 
 
 class Pet(object):
