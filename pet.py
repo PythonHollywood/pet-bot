@@ -65,12 +65,10 @@ class Pet():
         Perform an action specified in string action. If action string
         is empty or undefined, create a response based on current state.
         """
-
-        # get action from text
-
-        # call method associated with action.
-        # for example
-        return self.action_spank()
+        selector = {
+            'spank': self.action_spank,
+            'feed': self.action_feed}
+        return selector.get(action.lower(), self.action_else)()
 
     def action_spank(self):
         """Example action method. Prefix these with action to make them
@@ -87,7 +85,11 @@ class Pet():
         return response
 
     def action_feed(self):
-        pass
+        self.adjust_state(hunger=-1)
+        return 'Yummy!'
+
+    def action_else(self):
+        return 'I don\'t know what to do with that'
 
     def speak(self):
         """Craft a phrase (<140 char) describing the current state of the pet"""
