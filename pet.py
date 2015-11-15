@@ -1,5 +1,12 @@
 """Skeleton for Pet Class"""
 
+DEFAULT_STATE = dict(
+    awake=True,
+    hunger=0.5,
+    energy=0.5,
+    damage=0.5,
+    mood=0.5,
+    alertness=0.5)
 
 class Pet():
     def __init__(self, state_file='', initial_state=None, **kwargs):
