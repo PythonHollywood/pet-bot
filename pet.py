@@ -1,14 +1,23 @@
 """Skeleton for Pet Class"""
+import json
+
+DEFAULT_STATE = dict(
+    awake=True,
+    hunger=50,
+    energy=50,
+    damage=50,
+    mood=50,
+    alertness=50)
 
 
-class Pet():
-    def __init__(self, state_file='', initial_state=None, **kwargs):
+class Pet(object):
+    def __init__(self, state_file=None, initial_state=None, **kwargs):
         """Creator method for the pet.
 
         Args:
             state_file: filename for the json file where state is saved.
-            If left empty, the deafault name state.json will be used.
-            May implement a keyword for in memory only
+            If left empty, the state will only be stored in memory and
+            thus not recoverable after the program has ended.
 
             initial_state (dict): dictionary containing initial values
             for the states. If empty, values from state_file will be used.
@@ -18,17 +27,15 @@ class Pet():
             **kwargs: Alternative way to specify initial states for individual
             state variables. Overrides initial_state and state_file.
         """
-        self.state = {}
         self.state_file = state_file
-
-        if state_file:
-            # Read json file
-            pass
-        elif initial_state:
-            pass
-        else:
-            # Initialize state
-            pass
+        self.state = DEFAULT_STATE
+        if self.state_file:
+            try:
+                with open(state_file) as f:
+                    self.state.update(json.load(f))
+            except IOError:
+                pass
+        self.update_state(initial_state, **kwargs)
 
     def increment_time(self):
         """Some states should be updated as time progresses. This is done
@@ -36,26 +43,54 @@ class Pet():
         self.adjust_state(hunger=1)
 
     def _update_state_file(self):
-        """Updates the state json file with the current state"""
-        pass
+        """Updates the state json file with the current state.
+        If self.state_file is None, the state is just stored
+        in memory and nothing will happen.
+        """
+        if self.state_file:
+            with open(self.state_file, mode='w') as f:
+                json.dump(self.state, f)
 
     def update_state(self, new_state=None, **kwargs):
         """Update state to new_state or **kwargs.
-        **kwargs should override new_state (this allows overriding one value in new_state)"""
+        **kwargs override new_state (this allows overriding one value in new_state)
 
-        # update self.state
-        # Don't forget to run self._update_state_file()
+        Args:
+            new_state: dict containing the updated state variables. Any state variable
+                not specified will be left untouched.
+            **kwargs: Key-value pairs specifying the new state. Overrides new_state.
+        """
+        if new_state is None:
+            new_state = {}
+        self.state.update(new_state, **kwargs)
+        self._update_state_file()
         pass
 
     def adjust_state(self, adjustments=None, **kwargs):
         """Make a relative adjustment of the state from the current
-        based on dict or keyword arguments
+        based on dict or keyword arguments. **kwargs override adjustments
+        (this allows overriding one value in adjustments)
 
-        **kwargs should override adjustments (this allows overriding one value in adjustments)
+        Args:
+            adjustments: A dict containing relative adjustments for states.
+
+            **kwargs: Key-value pairs containing relative adjustments for states.
+            Overrides adjustments. For added clarity, one can use the unity operator
+            when making positive adjustments. For example:
+                self.adjust_state(mood=+1)
+
+        Raises:
+            KeyError: if adjustments or kwargs contain a key that is not defined
+            in self.state, KeyError will be raised.
         """
-        # make a relative update of self.state
-        # Don't forget to run self._update_state_file()
-        pass
+        if adjustments is None:
+            adjustments = {}
+        adjustments = adjustments.copy()
+        adjustments.update(**kwargs)
+        new_state = {}
+        for key in adjustments:
+            new_state[key] = self.state[key] + adjustments[key]
+        self.update_state(new_state)
 
     def interact_with(self, action=''):
         """This method should take an arbitrary string as an argument
