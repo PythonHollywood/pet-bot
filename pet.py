@@ -54,10 +54,17 @@ class Pet():
 
     def update_state(self, new_state=None, **kwargs):
         """Update state to new_state or **kwargs.
-        **kwargs should override new_state (this allows overriding one value in new_state)"""
+        **kwargs override new_state (this allows overriding one value in new_state)
 
-        # update self.state
-        # Don't forget to run self._update_state_file()
+        Args:
+            new_state: dict containing the updated state variables. Any state variable
+                not specified will be left untouched.
+            **kwargs: Key-value pairs specifying the new state. Overrides new_state.
+        """
+        if new_state is None:
+            new_state = {}
+        self.state.update(new_state, **kwargs)
+        self._update_state_file()
         pass
 
     def adjust_state(self, adjustments=None, **kwargs):
