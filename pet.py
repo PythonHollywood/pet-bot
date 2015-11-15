@@ -30,8 +30,11 @@ class Pet(object):
         self.state_file = state_file
         self.state = DEFAULT_STATE
         if self.state_file:
-            with open(state_file) as f:
-                self.state.update(json.load(f))
+            try:
+                with open(state_file) as f:
+                    self.state.update(json.load(f))
+            except IOError:
+                pass
         self.update_state(initial_state, **kwargs)
 
     def increment_time(self):
