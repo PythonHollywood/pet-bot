@@ -1,4 +1,5 @@
 """Skeleton for Pet Class"""
+import json
 
 DEFAULT_STATE = dict(
     awake=True,
@@ -43,8 +44,13 @@ class Pet():
         self.adjust_state(hunger=1)
 
     def _update_state_file(self):
-        """Updates the state json file with the current state"""
-        pass
+        """Updates the state json file with the current state.
+        If self.state_file is None, the state is just stored
+        in memory and nothing will happen.
+        """
+        if self.state_file:
+            with open(self.state_file, mode='w') as f:
+                json.dump(self.state, f)
 
     def update_state(self, new_state=None, **kwargs):
         """Update state to new_state or **kwargs.
